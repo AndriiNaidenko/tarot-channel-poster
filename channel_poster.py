@@ -124,19 +124,21 @@ async def create_and_post(fixed_topic: str = None):
         logger.info("=" * 50)
         logger.info("Starting post generation cycle")
         
-        # Initialize components
-        news_fetcher = NewsFetcher()
+        # Initialize components  
         post_generator = PostGenerator()
         
-        # Fetch news with fixed topic if provided
-        logger.info(f"Fetching news... (fixed_topic={fixed_topic})")
-        news_data = await news_fetcher.fetch_news(topic=fixed_topic)
+        # Use topic directly without news fetcher for now
+        logger.info(f"Generating post for topic: {fixed_topic}")
         
-        if news_data.get('error'):
-            logger.error(f"Error fetching news: {news_data['error']}")
-            return
+        # Create simple news_data structure
+        news_data = {
+            "topic": fixed_topic or "energy",
+            "query": "",
+            "results": f"Сегодняшняя тема: {fixed_topic or 'энергия дня'}",
+            "timestamp": datetime.now()
+        }
         
-        logger.info(f"News fetched for topic: {news_data['topic']}")
+        logger.info(f"Topic selected: {news_data['topic']}")
         
         # Generate post
         logger.info("Generating post...")
