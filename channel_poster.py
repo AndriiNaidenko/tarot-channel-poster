@@ -172,6 +172,26 @@ async def create_and_post(fixed_topic: str = None):
         logger.error(f"Error in create_and_post: {e}", exc_info=True)
 
 
+async def morning_post_job():
+    """Morning post job wrapper"""
+    await create_and_post(fixed_topic=get_topic_for_time(9))
+
+
+async def day_post_job():
+    """Day post job wrapper"""
+    await create_and_post(fixed_topic=get_topic_for_time(14))
+
+
+async def evening_post_job():
+    """Evening post job wrapper"""
+    await create_and_post(fixed_topic=get_topic_for_time(19))
+
+
+async def night_post_job():
+    """Night post job wrapper"""
+    await create_and_post(fixed_topic=get_topic_for_time(22))
+
+
 async def main():
     """Main entry point"""
     global bot
@@ -191,36 +211,32 @@ async def main():
     # Schedule posts 4 times a day with fixed topics
     # Morning: 9:00 - Energy of the Day
     scheduler.add_job(
-        create_and_post,
+        morning_post_job,
         CronTrigger(hour=9, minute=0),
-        kwargs={'fixed_topic': get_topic_for_time(9)},
         id='morning_post',
         name='Morning Post (Energy)'
     )
     
     # Day: 14:00 - Space OR Science (alternating)
     scheduler.add_job(
-        create_and_post,
+        day_post_job,
         CronTrigger(hour=14, minute=0),
-        kwargs={'fixed_topic': get_topic_for_time(14)},
         id='day_post',
         name='Day Post (Space/Science)'
     )
     
     # Evening: 19:00 - Technology OR Nature (alternating)
     scheduler.add_job(
-        create_and_post,
+        evening_post_job,
         CronTrigger(hour=19, minute=0),
-        kwargs={'fixed_topic': get_topic_for_time(19)},
         id='evening_post',
         name='Evening Post (Tech/Nature)'
     )
     
     # Night: 22:30 - Space (mysticism)
     scheduler.add_job(
-        create_and_post,
+        night_post_job,
         CronTrigger(hour=22, minute=30),
-        kwargs={'fixed_topic': get_topic_for_time(22)},
         id='night_post',
         name='Night Post (Space)'
     )
