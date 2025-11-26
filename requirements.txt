@@ -3,3 +3,4 @@ apscheduler==3.10.4
 python-dotenv==1.0.0
 openai>=1.68.2
 aiohttp>=3.9.0,<3.11
+pydantic-settings>=2.0.0
