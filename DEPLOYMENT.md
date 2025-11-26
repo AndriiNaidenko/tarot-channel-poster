@@ -171,3 +171,4 @@ railway logs --follow
 2. Перевір права бота в каналі
 3. Перевір змінні середовища
 4. Перезапусти сервіс на Railway
+# Deployment successful Wed Nov 26 08:30:03 UTC 2025
