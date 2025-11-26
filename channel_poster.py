@@ -172,6 +172,11 @@ async def create_and_post(fixed_topic: str = None):
         logger.error(f"Error in create_and_post: {e}", exc_info=True)
 
 
+def schedule_post(topic: str):
+    """Wrapper to schedule async post function"""
+    asyncio.create_task(create_and_post(fixed_topic=topic))
+
+
 async def main():
     """Main entry point"""
     global bot
@@ -191,7 +196,7 @@ async def main():
     # Schedule posts 4 times a day with fixed topics
     # Morning: 9:00 - Energy of the Day
     scheduler.add_job(
-        lambda: create_and_post(fixed_topic=get_topic_for_time(9)),
+        lambda: schedule_post(get_topic_for_time(9)),
         CronTrigger(hour=9, minute=0),
         id='morning_post',
         name='Morning Post (Energy)'
@@ -199,7 +204,7 @@ async def main():
     
     # Day: 14:00 - Space OR Science (alternating)
     scheduler.add_job(
-        lambda: create_and_post(fixed_topic=get_topic_for_time(14)),
+        lambda: schedule_post(get_topic_for_time(14)),
         CronTrigger(hour=14, minute=0),
         id='day_post',
         name='Day Post (Space/Science)'
@@ -207,7 +212,7 @@ async def main():
     
     # Evening: 19:00 - Technology OR Nature (alternating)
     scheduler.add_job(
-        lambda: create_and_post(fixed_topic=get_topic_for_time(19)),
+        lambda: schedule_post(get_topic_for_time(19)),
         CronTrigger(hour=19, minute=0),
         id='evening_post',
         name='Evening Post (Tech/Nature)'
@@ -215,7 +220,7 @@ async def main():
     
     # Night: 22:30 - Space (mysticism)
     scheduler.add_job(
-        lambda: create_and_post(fixed_topic=get_topic_for_time(22)),
+        lambda: schedule_post(get_topic_for_time(22)),
         CronTrigger(hour=22, minute=30),
         id='night_post',
         name='Night Post (Space)'
